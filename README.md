@@ -31,9 +31,8 @@ MMhops includes two challenging task formats:
 1.  **Bridging Reasoning**: Starts from a single image and requires multi-step chain reasoning (2+ hops) to link visual entities to external textual knowledge.
 2.  **Comparison Reasoning**: Involves identifying entities across multiple images and performing comparative analysis based on their shared attributes.
 
-
-[fig2.pdf](https://github.com/user-attachments/files/24207145/fig2.pdf)
-*Figure 1: The multi-stage construction process for the MMhops dataset. (a) Bridging Dataset Construction iteratively expands questions to increase hop depth. (b) Comparison Dataset Construction generates questions comparing attributes of entities from different images.*
+<img width="1234" height="533" alt="fig2" src="https://github.com/user-attachments/assets/0e3683ac-fbe0-4c15-895b-b4ebd852e293" />
+The multi-stage construction process for the MMhops dataset. (a) Bridging Dataset Construction iteratively expands questions to increase hop depth. (b) Comparison Dataset Construction generates questions comparing attributes of entities from different images.
 
 ### 📊 Statistics
 Unlike existing KB-VQA datasets (e.g., OK-VQA, InfoSeek) which are often limited to single-hop reasoning, MMhops significantly increases complexity:
@@ -43,7 +42,7 @@ Unlike existing KB-VQA datasets (e.g., OK-VQA, InfoSeek) which are often limited
 
 ## 🤖 MMhops-R1 Framework
 
-[fig3.pdf](https://github.com/user-attachments/files/24207159/fig3.pdf)
+<img width="1487" height="405" alt="fig3" src="https://github.com/user-attachments/assets/aa17d14e-39ff-4e82-a1cd-94705c1fbe57" />
 **MMhops-R1** is an RL-driven mRAG framework designed for dynamic reasoning. Unlike static retrieval pipelines, MMhops-R1 can autonomously select reasoning strategies and interact with retrievers.
 
 ### Key Features
