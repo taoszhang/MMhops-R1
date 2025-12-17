@@ -59,7 +59,7 @@ Unlike existing KB-VQA datasets (e.g., OK-VQA, InfoSeek) which are often limited
 
 We evaluated MMhops-R1 against strong baselines, including proprietary MLLMs and existing Multi-hop/Multimodal RAG methods. MMhops-R1 achieves state-of-the-art performance among open-source methods.
 
-| Method | Base Model | Retriever | Bridging (Overall) | Comparison |
+| Method | Base Model | Retriever | Bridging | Comparison |
 | :--- | :--- | :--- | :--- | :--- |
 | **GPT-4o** | - | - | 36.62 | 8.76 |
 | **Gemini-2.5-Pro** | - | - | 53.98 | 29.39 |
