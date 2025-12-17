@@ -73,6 +73,7 @@ We evaluated MMhops-R1 against strong baselines, including proprietary MLLMs and
 
 If you find this dataset or code useful in your research, please cite our paper:
 
+```bibtex
 @misc{zhang2025mmhopsr1multimodalmultihopreasoning,
       title={MMhops-R1: Multimodal Multi-hop Reasoning}, 
       author={Tao Zhang and Ziqi Zhang and Zongyang Ma and Yuxin Chen and Bing Li and Chunfeng Yuan and Guangting Wang and Fengyun Rao and Ying Shan and Weiming Hu},
