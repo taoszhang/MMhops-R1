@@ -1,0 +1,5 @@
+# MMhops Evaluation Script Dependencies
+# Install with: pip install -r requirements.txt
+
+datasets>=2.14.0
+word2number>=1.1
