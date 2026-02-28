@@ -40,6 +40,27 @@ Unlike existing KB-VQA datasets (e.g., OK-VQA, InfoSeek) which are often limited
 * **70.8%** of samples require 3 reasoning steps.
 * **29.2%** of samples require 4 reasoning steps.
 
+### 📋 Dataset Schema
+
+Each sample in the dataset contains the following fields:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | string | Unique sample identifier (e.g., `"MMhops_test_00001"`) |
+| `problem` | string | Question text with `<image>` placeholder |
+| `answer` | string | Reference answer |
+| `answer_eval` | list[string] | Ground truth values for evaluation |
+| `split` | string | Task type: `"Bridge"` or `"Compare"` |
+| `problem_type` | string | Answer type: `"String"`, `"Numerical"`, or `"Time"` |
+
+**Test Set Distribution:**
+
+| Split | Count | Question Type | Count |
+|-------|-------|---------------|-------|
+| Bridge | 5,287 | Numerical | 3,954 |
+| Compare | 936 | String | 1,300 |
+| **Total** | **6,223** | Time | 969 |
+
 ## 🤖 MMhops-R1 Framework
 
 <img width="1487" height="405" alt="fig3" src="https://github.com/user-attachments/assets/aa17d14e-39ff-4e82-a1cd-94705c1fbe57" />
@@ -68,6 +89,55 @@ We evaluated MMhops-R1 against strong baselines, including proprietary MLLMs and
 | **MMhops-R1 (Ours)**| **Qwen2.5-VL-7B** | **Image, Text** | **51.35** | **22.01** |
 
 *Table 1: Main results on the MMhops test set.*
+
+## 📐 Evaluation
+
+We provide an official evaluation script to benchmark your model on MMhops.
+
+### Installation
+
+```bash
+cd evaluation
+pip install -r requirements.txt
+```
+
+### Prediction File Format
+
+Your predictions should be saved in **JSONL format** (one JSON object per line):
+
+```jsonl
+{"id": "MMhops_test_00001", "prediction": "174th"}
+{"id": "MMhops_test_00002", "prediction": "12"}
+{"id": "MMhops_test_00003", "prediction": "Eight"}
+```
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `id` | string | ✅ | Sample ID matching the dataset |
+| `prediction` | string | ✅ | Model's predicted answer |
+
+### Run Evaluation
+
+```bash
+python evaluation/evaluate_mmhops.py --prediction-file your_predictions.jsonl
+```
+
+**Options:**
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `--prediction-file`, `-p` | (required) | Path to prediction file (JSONL) |
+| `--dataset` | `taoszhang/MMhops` | HuggingFace dataset name |
+| `--split` | `test` | Dataset split: `test`, `train`, or `validation` |
+| `--output-json`, `-o` | None | Save results to JSON file |
+
+### Evaluation Metrics
+
+| Question Type | Evaluation Method |
+|---------------|-------------------|
+| **String** | Exact match after normalization (lowercase, remove articles/punctuation) |
+| **Numerical** | Range matching: correct if prediction falls within `[min, max]` or IoU ≥ 0.5 |
+| **Time** | Exact match after normalization |
 
 ## 🖊️ Citation
 
