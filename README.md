@@ -2,7 +2,9 @@
 
 <div align="center">
 
-[![Paper](https://img.shields.io/badge/Paper-ArXiv-red)](https://arxiv.org/abs/2512.13573) [![Dataset](https://img.shields.io/badge/Dataset-HuggingFace-yellow)](https://huggingface.co/datasets/taoszhang/MMhops)
+[![Paper](https://img.shields.io/badge/Paper-ArXiv-red)](https://arxiv.org/abs/2512.13573)
+[![Dataset](https://img.shields.io/badge/Dataset-HuggingFace-yellow)](https://huggingface.co/datasets/taoszhang/MMhops)
+[![Knowledge Base](https://img.shields.io/badge/Knowledge_Base-HuggingFace-orange)](https://huggingface.co/datasets/taoszhang/MMhops-KB)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
 </div>
@@ -90,6 +92,29 @@ We evaluated MMhops-R1 against strong baselines, including proprietary MLLMs and
 
 *Table 1: Main results on the MMhops test set.*
 
+## 🔎 Retrieval Services
+
+The prebuilt text and image retrieval databases are available from
+**[Hugging Face: taoszhang/MMhops-KB](https://huggingface.co/datasets/taoszhang/MMhops-KB)**.
+They contain 904,790 E5-indexed Wikipedia passages and 96,110 CLIP-indexed
+Wikipedia entities. Raw images and encoder weights remain external dependencies.
+
+This repository provides two self-hosted FastAPI services:
+
+- `retrieval/text_retrieval_server.py`: E5 text retrieval at `POST /retrieve`.
+- `retrieval/image_retrieval_server.py`: CLIP image retrieval at `POST /image_search`.
+
+Download the knowledge base and install the service dependencies with:
+
+```bash
+pip install -r retrieval/requirements.txt
+hf download taoszhang/MMhops-KB \
+  --repo-type dataset --local-dir data/MMhops-KB
+```
+
+See **[retrieval/README.md](retrieval/README.md)** for launch commands, request
+examples, index configuration, and deployment notes.
+
 ## 📐 Evaluation
 
 We provide an official evaluation script to benchmark your model on MMhops.
@@ -153,3 +178,4 @@ If you find this dataset or code useful in your research, please cite our paper:
       primaryClass={cs.CV},
       url={https://arxiv.org/abs/2512.13573}, 
 }
+```

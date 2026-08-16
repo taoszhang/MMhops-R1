@@ -1,0 +1,9 @@
+faiss-cpu>=1.7.4
+fastapi>=0.110.0
+huggingface_hub>=0.34.0
+numpy>=1.24.0
+Pillow>=9.5.0
+torch>=2.1.0
+transformers>=4.30.0
+uvicorn>=0.27.0
+clip @ git+https://github.com/openai/CLIP.git
