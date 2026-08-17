@@ -122,7 +122,6 @@ We provide an official evaluation script to benchmark your model on MMhops.
 ### Installation
 
 ```bash
-cd evaluation
 pip install -r requirements.txt
 ```
 
@@ -139,12 +138,16 @@ Your predictions should be saved in **JSONL format** (one JSON object per line):
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | `id` | string | ✅ | Sample ID matching the dataset |
-| `prediction` | string | ✅ | Model's predicted answer |
+| `prediction` | string | ✅ | Final answer only, without the reasoning trajectory or `<answer>` tags |
+
+Every dataset sample remains in the denominator. Missing or empty predictions
+are counted as incorrect. Duplicate IDs, unknown IDs, malformed JSON, and
+non-string fields are rejected instead of being silently skipped.
 
 ### Run Evaluation
 
 ```bash
-python evaluation/evaluate_mmhops.py --prediction-file your_predictions.jsonl
+python evaluate_mmhops.py --prediction-file your_predictions.jsonl
 ```
 
 **Options:**
@@ -152,30 +155,45 @@ python evaluation/evaluate_mmhops.py --prediction-file your_predictions.jsonl
 | Option | Default | Description |
 |--------|---------|-------------|
 | `--prediction-file`, `-p` | (required) | Path to prediction file (JSONL) |
-| `--dataset` | `taoszhang/MMhops` | HuggingFace dataset name |
 | `--split` | `test` | Dataset split: `test`, `train`, or `validation` |
+| `--cache-dir` | None | Optional Hugging Face cache directory |
 | `--output-json`, `-o` | None | Save results to JSON file |
+
+Evaluator v1.0.0 uses `taoszhang/MMhops` at revision
+[`20bca45129d28f56bfefcffe7df0c080757fe9a7`](https://huggingface.co/datasets/taoszhang/MMhops/commit/20bca45129d28f56bfefcffe7df0c080757fe9a7)
+so results do not change when the dataset repository is updated.
 
 ### Evaluation Metrics
 
 | Question Type | Evaluation Method |
 |---------------|-------------------|
-| **String** | Exact match after normalization (lowercase, remove articles/punctuation) |
-| **Numerical** | Range matching: correct if prediction falls within `[min, max]` or IoU ≥ 0.5 |
-| **Time** | Exact match after normalization |
+| **String** | Exact match after lowercasing, removing English articles and ASCII punctuation, and normalizing whitespace |
+| **Numerical** | A scalar must fall within the `answer_eval` interval; a two-number range must be contained in it or have IoU ≥ 0.5 |
+| **Time** | The same normalized exact match as String, evaluated against the released time aliases |
+
+The numerical preprocessing is kept compatible with the evaluator used for the
+paper: it converts English number words and extracts at most the first two
+numbers from the final answer. Models should answer in the unit requested by the
+question because the evaluator does not perform unit conversion.
+
+Scoring uses only `id`, `split`, `problem_type`, and `answer_eval`. The dataset's
+display-oriented `answer` field, images, retrieval actions, and format/action
+rewards do not affect benchmark accuracy. The output reports the paper's String,
+Numerical, Time, Bridge, and Compare metrics, together with a micro average and
+exact `correct / total` counts.
 
 ## 🖊️ Citation
 
 If you find this dataset or code useful in your research, please cite our paper:
 
 ```bibtex
-@misc{zhang2025mmhopsr1multimodalmultihopreasoning,
-      title={MMhops-R1: Multimodal Multi-hop Reasoning}, 
-      author={Tao Zhang and Ziqi Zhang and Zongyang Ma and Yuxin Chen and Bing Li and Chunfeng Yuan and Guangting Wang and Fengyun Rao and Ying Shan and Weiming Hu},
-      year={2025},
-      eprint={2512.13573},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV},
-      url={https://arxiv.org/abs/2512.13573}, 
+@inproceedings{zhang2026mmhops,
+  title={MMHops-R1: Multimodal multi-hop reasoning},
+  author={Zhang, Tao and Zhang, Ziqi and Ma, Zongyang and Chen, Yuxin and Li, Bing and Yuan, Chunfeng and Wang, Guangting and Rao, Fengyun and Shan, Ying and Hu, Weiming},
+  booktitle={Proceedings of the AAAI Conference on Artificial Intelligence},
+  volume={40},
+  number={33},
+  pages={28391--28399},
+  year={2026}
 }
 ```
